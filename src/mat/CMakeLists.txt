@@ -14,12 +14,13 @@ add_executable(qtxdg-mat
 
 target_compile_definitions(qtxdg-mat
     PRIVATE
-        "-DQTXDG_VERSION=\"${QTXDG_VERSION_STRING}\""
+        "-DQTXDG_TOOLS_VERSION=\"${QTXDG_TOOLS_VERSION_STRING}\""
         "QT_NO_KEYWORDS"
 )
 
 target_link_libraries(qtxdg-mat
-    ${QTXDGX_LIBRARY_NAME}
+    Qt5::Core
+    Qt5Xdg
 )
 
 install(TARGETS
