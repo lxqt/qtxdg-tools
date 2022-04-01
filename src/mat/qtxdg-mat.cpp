@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     int runResult = 0;
     app.setApplicationName(QSL("qtxdg-mat"));
-    app.setApplicationVersion(QSL(QTXDG_VERSION));
+    app.setApplicationVersion(QSL(QTXDG_TOOLS_VERSION));
     app.setOrganizationName(QSL("LXQt"));
     app.setOrganizationDomain(QSL("lxqt.org"));
 
