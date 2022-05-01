@@ -25,6 +25,7 @@ target_link_libraries(qtxdg-mat
 
 install(TARGETS
     qtxdg-mat
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    EXPORT "qtxdg-tools-targets"
     COMPONENT Runtime
 )
