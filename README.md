@@ -2,14 +2,20 @@
 
 ## Overview
 
-`qtxdg-tools` provides user tools for setting/getting default applications for MIME types and opening files with their default applications,
+User tools for [libqtxdg](https://github.com/lxqt/libqtxdg).
 
-It is maintained by the LXQt project and needed by LXQt Session, in order to be used by `xdg-utils`.
+`qtxdg-tools` contains a CLI MIME tool, `qtxdg-mat`, for handling file associations and opening files with their default applications.
+
+It is maintained by the LXQt project and needed by LXQt Session, in order to be used by `xdg-utils`. Yet it can be used independently from LXQt, too.
 
 ## Installation
 
 ### Sources
 
-The build dependencies are CMake, [lxqt-build-tools](https://github.com/lxqt/lxqt-build-tools), qtbase, and [libqtxdg](https://github.com/lxqt/libqtxdg).
+At runtime qtbase is needed. Additional build dependencies are CMake, [libqtxdg](https://github.com/lxqt/libqtxdg) and, optionally, Git to pull latest VCS checkouts.
 
-The code configuration is handled by CMake so all corresponding generic instructions apply. To build and install run `make` and `make install`respectively.
+Code configuration is handled by CMake. CMake variable `CMAKE_INSTALL_PREFIX`
+will normally have to be set to `/usr`.
+
+To build run `make`, to install `make install`, which accepts variable `DESTDIR`
+as usual.
