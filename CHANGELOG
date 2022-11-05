@@ -1,3 +1,7 @@
+qtxdg-tools-3.10.0 / 2022-11-05
+===============================
+ * Updated for libqtxdg-3.10.
+
 qtxdg-tools-3.9.1 / 2022-05-08
 ==============================
  * First release. `qtxdg-tools` is separated from `libqtxdg`, to be used by `xdg-utils` under an LXQt session.
