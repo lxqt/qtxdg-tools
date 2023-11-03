@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 # CMP0000: Call the cmake_minimum_required() command at the beginning of the top-level
 # CMakeLists.txt file even before calling the project() command.
 # The cmake_minimum_required(VERSION) command implicitly invokes the cmake_policy(VERSION)
@@ -6,18 +6,18 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 # versions.
 project(qtxdg-tools)
 
-set(QTXDG_TOOLS_MAJOR_VERSION 3)
-set(QTXDG_TOOLS_MINOR_VERSION 11)
+set(QTXDG_TOOLS_MAJOR_VERSION 4)
+set(QTXDG_TOOLS_MINOR_VERSION 0)
 set(QTXDG_TOOLS_PATCH_VERSION 0)
 set(QTXDG_TOOLS_VERSION_STRING ${QTXDG_TOOLS_MAJOR_VERSION}.${QTXDG_TOOLS_MINOR_VERSION}.${QTXDG_TOOLS_PATCH_VERSION})
 
-set(LXQTBT_MINIMUM_VERSION "0.13.0")
-set(QTXDG_MINIMUM_VERSION "3.11.0")
-set(QT_MINIMUM_VERSION "5.15.0")
+set(LXQTBT_MINIMUM_VERSION "2.0.0")
+set(QTXDG_MINIMUM_VERSION "4.0.0")
+set(QT_MINIMUM_VERSION "6.3.0")
 
-find_package(lxqt-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
-find_package(Qt5 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Core)
-find_package(Qt5Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
+find_package(lxqt2-build-tools ${LXQTBT_MINIMUM_VERSION} REQUIRED)
+find_package(Qt6 ${QT_MINIMUM_VERSION} CONFIG REQUIRED Core)
+find_package(Qt6Xdg ${QTXDG_MINIMUM_VERSION} REQUIRED)
 
 include(GNUInstallDirs)             # Standard directories for installation
 include(FeatureSummary)
