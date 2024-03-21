@@ -158,7 +158,7 @@ int DefAppMatCommand::run(const QStringList & /*arguments*/)
         }
 
         XdgMimeApps apps;
-        for (const QString &mimeType : qAsConst(data.mimeTypes)) {
+        for (const QString &mimeType : std::as_const(data.mimeTypes)) {
             if (!apps.setDefaultApp(mimeType, app)) {
                 std::cerr << qPrintable(QSL("Could not set '%1' as default for '%2'\n").arg(app.fileName(), mimeType));
                 success = false;

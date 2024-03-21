@@ -113,7 +113,7 @@ int OpenMatCommand::run(const QStringList &arguments)
     XdgDesktopFile *df = nullptr;
     bool isLocalFile = false;
     QString localFilename;
-    for (const QString &urlString : qAsConst(files)) {
+    for (const QString &urlString : std::as_const(files)) {
         const QUrl url(urlString);
         const QString scheme = url.scheme();
         if (scheme.isEmpty()) {

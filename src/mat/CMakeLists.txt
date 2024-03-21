@@ -19,8 +19,8 @@ target_compile_definitions(qtxdg-mat
 )
 
 target_link_libraries(qtxdg-mat
-    Qt5::Core
-    Qt5Xdg
+    Qt6::Core
+    Qt6Xdg
 )
 
 install(TARGETS
