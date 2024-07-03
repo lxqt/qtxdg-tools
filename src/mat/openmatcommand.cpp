@@ -139,7 +139,7 @@ int OpenMatCommand::run(const QStringList &arguments)
         }
 
         if (df) { // default app found
-            if (!df->startDetached(urlString)) {
+            if (!df->startDetached(isLocalFile ? localFilename : urlString)) {
                 std::cerr << qPrintable(
                         QSL("Error while running the default application (%1) for %2\n").arg(df->name(), urlString));
                 success = false;
