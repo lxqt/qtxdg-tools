@@ -1,3 +1,7 @@
+qtxdg-tools-4.1.0 / 2024-11-05
+===============================
+ * Do not include `file://` when opening local files.
+
 qtxdg-tools-4.0.0 / 2024-04-17
 ===============================
  * Ported to Qt6.
