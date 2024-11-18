@@ -52,11 +52,11 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefAp
     parser->clearPositionalArguments();
     parser->setApplicationDescription("Get/Set the default application for a mimetype"_L1);
 
-    parser->addPositionalArgument("defapp"_L1, QSL("mimetype(s)"),
+    parser->addPositionalArgument("defapp"_L1, u"mimetype(s)"_s,
                                   QCoreApplication::tr("[mimetype(s)...]"));
 
-    const QCommandLineOption defAppNameOption(QStringList() << QSL("s") << QSL("set"),
-                QSL("Application to be set as default"), QSL("app name"));
+    const QCommandLineOption defAppNameOption(QStringList() << u"s"_s << u"set"_s,
+                u"Application to be set as default"_s, u"app name"_s);
 
     parser->addOption(defAppNameOption);
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -71,7 +71,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefAp
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
@@ -82,21 +82,21 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefAp
         defAppName = parser->value(defAppNameOption);
 
     if (isDefAppNameSet && defAppName.isEmpty()) {
-        *errorMessage = QSL("No application name");
+        *errorMessage = u"No application name"_s;
         return CommandLineError;
     }
 
     QStringList mimeTypes = parser->positionalArguments();
 
     if (mimeTypes.size() < 2) {
-        *errorMessage = QSL("MimeType missing");
+        *errorMessage = u"MimeType missing"_s;
         return CommandLineError;
     }
 
     mimeTypes.removeAt(0);
 
     if (!isDefAppNameSet && mimeTypes.size() > 1) {
-        *errorMessage = QSL("Only one mimeType, please");
+        *errorMessage = u"Only one mimeType, please"_s;
         return CommandLineError;
     }
 
@@ -150,22 +150,22 @@ int DefAppMatCommand::run(const QStringList & /*arguments*/)
             std::cout << qPrintable(XdgDesktopFile::id(defApp->fileName())) << "\n";
             delete defApp;
         } else {
-//            std::cout << qPrintable(QSL("No default application for '%1'\n").arg(mimeType));
+//            std::cout << qPrintable(u"No default application for '%1'\n"_s.arg(mimeType));
         }
     } else { // Set default App
         XdgDesktopFile app;
         if (!app.load(data.defAppName)) {
-            std::cerr << qPrintable(QSL("Could not find find '%1'\n").arg(data.defAppName));
+            std::cerr << qPrintable(u"Could not find find '%1'\n"_s.arg(data.defAppName));
             return EXIT_FAILURE;
         }
 
         XdgMimeApps apps;
         for (const QString &mimeType : std::as_const(data.mimeTypes)) {
             if (!apps.setDefaultApp(mimeType, app)) {
-                std::cerr << qPrintable(QSL("Could not set '%1' as default for '%2'\n").arg(app.fileName(), mimeType));
+                std::cerr << qPrintable(u"Could not set '%1' as default for '%2'\n"_s.arg(app.fileName(), mimeType));
                 success = false;
             } else {
-                std::cout << qPrintable(QSL("Set '%1' as default for '%2'\n").arg(app.fileName(), mimeType));
+                std::cout << qPrintable(u"Set '%1' as default for '%2'\n"_s.arg(app.fileName(), mimeType));
             }
         }
     }

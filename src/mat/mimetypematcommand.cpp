@@ -53,7 +53,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
     parser->clearPositionalArguments();
     parser->setApplicationDescription("Determines a file (mime)type"_L1);
 
-    parser->addPositionalArgument("mimetype"_L1, QSL("file | URL"),
+    parser->addPositionalArgument("mimetype"_L1, u"file | URL"_s,
                                   QCoreApplication::tr("[file | URL]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -68,20 +68,20 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
     QStringList fs = parser->positionalArguments();
     if (fs.size() < 2) {
-        *errorMessage = QSL("No file given");
+        *errorMessage = u"No file given"_s;
         return CommandLineError;
     }
 
     fs.removeAt(0);
 
     if (fs.size() > 1) {
-        *errorMessage = QSL("Only one file, please");
+        *errorMessage = u"Only one file, please"_s;
         return CommandLineError;
     }
     *file = fs.at(0);
@@ -127,7 +127,7 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
     if (isLocalFile) {
         const QFileInfo info(file);
         if (!info.exists(localFilename)) {
-            std::cerr << qPrintable(QSL("Cannot access '%1': No such file or directory\n").arg(file));
+            std::cerr << qPrintable(u"Cannot access '%1': No such file or directory\n"_s.arg(file));
             return EXIT_FAILURE;
         } else {
             QMimeDatabase mimeDb;
@@ -136,7 +136,7 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
             return EXIT_SUCCESS;
         }
     } else { // not a local file
-        std::cerr << qPrintable(QSL("Can't handle '%1': '%2' scheme not supported\n").arg(file, scheme));
+        std::cerr << qPrintable(u"Can't handle '%1': '%2' scheme not supported\n"_s.arg(file, scheme));
         return EXIT_FAILURE;
     }
 }

@@ -57,11 +57,11 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
 
     parser->addPositionalArgument("def-terminal"_L1, ""_L1);
 
-    const QCommandLineOption defTerminalNameOption(QStringList() << QSL("s") << QSL("set"),
-                QSL("Terminal to be set as default"), QSL("terminal"));
+    const QCommandLineOption defTerminalNameOption(QStringList() << u"s"_s << u"set"_s,
+                u"Terminal to be set as default"_s, u"terminal"_s);
 
-    const QCommandLineOption listAvailableOption(QStringList() << QSL("l") << QSL("list-available"),
-                QSL("List available terminals"));
+    const QCommandLineOption listAvailableOption(QStringList() << u"l"_s << u"list-available"_s,
+                u"List available terminals"_s);
 
     parser->addOption(defTerminalNameOption);
     parser->addOption(listAvailableOption);
@@ -77,7 +77,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
@@ -92,18 +92,18 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
     posArgs.removeAt(0);
 
     if (isDefTerminalNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("Extra arguments given: ");
+        *errorMessage = u"Extra arguments given: "_s;
         errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 
     if (!isDefTerminalNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("To set the default terminal use the -s/--set option");
+        *errorMessage = u"To set the default terminal use the -s/--set option"_s;
         return CommandLineError;
     }
 
     if (isListAvailableSet && (isDefTerminalNameSet || !posArgs.empty())) {
-        *errorMessage = QSL("list-available can't be used with other options and doesn't take arguments");
+        *errorMessage = u"list-available can't be used with other options and doesn't take arguments"_s;
         return CommandLineError;
     }
 
@@ -119,7 +119,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
 
 DefTerminalMatCommand::DefTerminalMatCommand(QCommandLineParser *parser)
     : MatCommandInterface("def-terminal"_L1,
-                          QSL("Get/Set the default terminal"),
+                          u"Get/Set the default terminal"_s,
                           parser)
 {
    Q_CHECK_PTR(parser);
@@ -173,13 +173,13 @@ int DefTerminalMatCommand::run(const QStringList & /*arguments*/)
         XdgDesktopFile toSetDefTerminal;
         if (toSetDefTerminal.load(data.defTerminalName)) {
             if (XdgDefaultApps::setTerminal(toSetDefTerminal)) {
-                std::cout << qPrintable(QSL("Set '%1' as the default terminal\n").arg(toSetDefTerminal.fileName()));
+                std::cout << qPrintable(u"Set '%1' as the default terminal\n"_s.arg(toSetDefTerminal.fileName()));
             } else {
-                std::cerr << qPrintable(QSL("Could not set '%1' as the default terminal\n").arg(toSetDefTerminal.fileName()));
+                std::cerr << qPrintable(u"Could not set '%1' as the default terminal\n"_s.arg(toSetDefTerminal.fileName()));
                 success = false;
             }
         } else { // could not load application file
-            std::cerr << qPrintable(QSL("Could not find find '%1'\n").arg(data.defTerminalName));
+            std::cerr << qPrintable(u"Could not find find '%1'\n"_s.arg(data.defTerminalName));
             success = false;
         }
     }

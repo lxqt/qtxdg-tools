@@ -42,7 +42,7 @@ using namespace Qt::Literals::StringLiterals;
 
 OpenMatCommand::OpenMatCommand(QCommandLineParser *parser)
     : MatCommandInterface("open"_L1,
-                          QSL("Open files with the default application"),
+                          u"Open files with the default application"_s,
                           parser)
 {
 }
@@ -54,7 +54,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
     parser->clearPositionalArguments();
     parser->setApplicationDescription("Open files with the default application"_L1);
 
-    parser->addPositionalArgument("open"_L1, QSL("files | URLs"),
+    parser->addPositionalArgument("open"_L1, u"files | URLs"_s,
                                   QCoreApplication::tr("[files | URLs]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -69,13 +69,13 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
     QStringList fs = parser->positionalArguments();
     if (fs.size() < 2) {
-        *errorMessage = QSL("No file or URL given");
+        *errorMessage = u"No file or URL given"_s;
         return CommandLineError;
     }
 
@@ -129,7 +129,7 @@ int OpenMatCommand::run(const QStringList &arguments)
         if (isLocalFile) {
             const QFileInfo f (localFilename);
             if (!f.exists()) {
-                std::cerr << qPrintable(QSL("Cannot access %1: No such file or directory\n").arg(urlString));
+                std::cerr << qPrintable(u"Cannot access %1: No such file or directory\n"_s.arg(urlString));
                 break;
             } else {
                 const QMimeType mimeType = mimeDb.mimeTypeForFile(f);
@@ -143,13 +143,13 @@ int OpenMatCommand::run(const QStringList &arguments)
         if (df) { // default app found
             if (!df->startDetached(isLocalFile ? localFilename : urlString)) {
                 std::cerr << qPrintable(
-                        QSL("Error while running the default application (%1) for %2\n").arg(df->name(), urlString));
+                        u"Error while running the default application (%1) for %2\n"_s.arg(df->name(), urlString));
                 success = false;
             }
             delete df;
             df = nullptr;
         } else { // no default app found
-            std::cout << qPrintable(QSL("No default application for '%1'\n").arg(urlString));
+            std::cout << qPrintable(u"No default application for '%1'\n"_s.arg(urlString));
         }
     }
     return success ? EXIT_SUCCESS : EXIT_FAILURE;

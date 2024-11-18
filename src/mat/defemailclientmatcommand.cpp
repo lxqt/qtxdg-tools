@@ -56,11 +56,11 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
 
     parser->addPositionalArgument("def-email-client"_L1, ""_L1);
 
-    const QCommandLineOption defEmailClientNameOption(QStringList() << QSL("s") << QSL("set"),
-                QSL("Email Client to be set as default"), QSL("email client"));
+    const QCommandLineOption defEmailClientNameOption(QStringList() << u"s"_s << u"set"_s,
+                u"Email Client to be set as default"_s, u"email client"_s);
 
-    const QCommandLineOption listAvailableOption(QStringList() << QSL("l") << QSL("list-available"),
-                QSL("List available email clients"));
+    const QCommandLineOption listAvailableOption(QStringList() << u"l"_s << u"list-available"_s,
+                u"List available email clients"_s);
 
     parser->addOption(defEmailClientNameOption);
     parser->addOption(listAvailableOption);
@@ -76,7 +76,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
@@ -91,18 +91,18 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
     posArgs.removeAt(0);
 
     if (isDefEmailClientNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("Extra arguments given: ");
+        *errorMessage = u"Extra arguments given: "_s;
         errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 
     if (!isDefEmailClientNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("To set the default email client use the -s/--set option");
+        *errorMessage = u"To set the default email client use the -s/--set option"_s;
         return CommandLineError;
     }
 
     if (isListAvailableSet && (isDefEmailClientNameSet || !posArgs.empty())) {
-        *errorMessage = QSL("list-available can't be used with other options and doesn't take arguments");
+        *errorMessage = u"list-available can't be used with other options and doesn't take arguments"_s;
         return CommandLineError;
     }
 
@@ -118,7 +118,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
 
 DefEmailClientMatCommand::DefEmailClientMatCommand(QCommandLineParser *parser)
     : MatCommandInterface("def-email-client"_L1,
-                          QSL("Get/Set the default email client"),
+                          u"Get/Set the default email client"_s,
                           parser)
 {
    Q_CHECK_PTR(parser);
@@ -169,13 +169,13 @@ int DefEmailClientMatCommand::run(const QStringList & /*arguments*/)
         XdgDesktopFile toSetDefEmailClient;
         if (toSetDefEmailClient.load(data.defEmailClientName)) {
             if (XdgDefaultApps::setEmailClient(toSetDefEmailClient)) {
-                std::cout << qPrintable(QSL("Set '%1' as the default email client\n").arg(toSetDefEmailClient.fileName()));
+                std::cout << qPrintable(u"Set '%1' as the default email client\n"_s.arg(toSetDefEmailClient.fileName()));
             } else {
-                std::cerr << qPrintable(QSL("Could not set '%1' as the default email client\n").arg(toSetDefEmailClient.fileName()));
+                std::cerr << qPrintable(u"Could not set '%1' as the default email client\n"_s.arg(toSetDefEmailClient.fileName()));
                 success = false;
             }
         } else { // could not load application file
-            std::cerr << qPrintable(QSL("Could not find find '%1'\n").arg(data.defEmailClientName));
+            std::cerr << qPrintable(u"Could not find find '%1'\n"_s.arg(data.defEmailClientName));
             success = false;
         }
     }

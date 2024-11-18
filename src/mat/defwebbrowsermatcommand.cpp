@@ -56,11 +56,11 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
 
     parser->addPositionalArgument("def-web-browser"_L1, ""_L1);
 
-    const QCommandLineOption defWebBrowserNameOption(QStringList() << QSL("s") << QSL("set"),
-                QSL("Web Browser to be set as default"), QSL("web bowser"));
+    const QCommandLineOption defWebBrowserNameOption(QStringList() << u"s"_s << u"set"_s,
+                u"Web Browser to be set as default"_s, u"web bowser"_s);
 
-    const QCommandLineOption listAvailableOption(QStringList() << QSL("l") << QSL("list-available"),
-                QSL("List available web browsers"));
+    const QCommandLineOption listAvailableOption(QStringList() << u"l"_s << u"list-available"_s,
+                u"List available web browsers"_s);
 
     parser->addOption(defWebBrowserNameOption);
     parser->addOption(listAvailableOption);
@@ -76,7 +76,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
@@ -91,18 +91,18 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
     posArgs.removeAt(0);
 
     if (isDefWebBrowserNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("Extra arguments given: ");
+        *errorMessage = u"Extra arguments given: "_s;
         errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 
     if (!isDefWebBrowserNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("To set the default browser use the -s/--set option");
+        *errorMessage = u"To set the default browser use the -s/--set option"_s;
         return CommandLineError;
     }
 
     if (isListAvailableSet && (isDefWebBrowserNameSet || !posArgs.empty())) {
-        *errorMessage = QSL("list-available can't be used with other options and doesn't take arguments");
+        *errorMessage = u"list-available can't be used with other options and doesn't take arguments"_s;
         return CommandLineError;
     }
 
@@ -118,7 +118,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
 
 DefWebBrowserMatCommand::DefWebBrowserMatCommand(QCommandLineParser *parser)
     : MatCommandInterface("def-web-browser"_L1,
-                          QSL("Get/Set the default web browser"),
+                          u"Get/Set the default web browser"_s,
                           parser)
 {
    Q_CHECK_PTR(parser);
@@ -169,13 +169,13 @@ int DefWebBrowserMatCommand::run(const QStringList & /*arguments*/)
         XdgDesktopFile toSetDefWebBrowser;
         if (toSetDefWebBrowser.load(data.defWebBrowserName)) {
             if (XdgDefaultApps::setWebBrowser(toSetDefWebBrowser)) {
-                std::cout << qPrintable(QSL("Set '%1' as the default web browser\n").arg(toSetDefWebBrowser.fileName()));
+                std::cout << qPrintable(u"Set '%1' as the default web browser\n"_s.arg(toSetDefWebBrowser.fileName()));
             } else {
-                std::cerr << qPrintable(QSL("Could not set '%1' as the default web browser\n").arg(toSetDefWebBrowser.fileName()));
+                std::cerr << qPrintable(u"Could not set '%1' as the default web browser\n"_s.arg(toSetDefWebBrowser.fileName()));
                 success = false;
             }
         } else { // could not load application file
-            std::cerr << qPrintable(QSL("Could not find find '%1'\n").arg(data.defWebBrowserName));
+            std::cerr << qPrintable(u"Could not find find '%1'\n"_s.arg(data.defWebBrowserName));
             success = false;
         }
     }
