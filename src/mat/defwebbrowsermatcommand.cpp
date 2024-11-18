@@ -34,6 +34,8 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 enum DefWebBrowserCommandMode {
     CommandModeGetDefWebBrowser,
     CommandModeSetDefWebBrowser,
@@ -50,9 +52,9 @@ struct DefWebBrowserData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWebBrowserData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Get/Set the default web browser"));
+    parser->setApplicationDescription("Get/Set the default web browser"_L1);
 
-    parser->addPositionalArgument(QL1S("def-web-browser"), QL1S());
+    parser->addPositionalArgument("def-web-browser"_L1, ""_L1);
 
     const QCommandLineOption defWebBrowserNameOption(QStringList() << QSL("s") << QSL("set"),
                 QSL("Web Browser to be set as default"), QSL("web bowser"));
@@ -115,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
 }
 
 DefWebBrowserMatCommand::DefWebBrowserMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("def-web-browser"),
+    : MatCommandInterface("def-web-browser"_L1,
                           QSL("Get/Set the default web browser"),
                           parser)
 {

@@ -34,6 +34,8 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 enum DefEmailClientCommandMode {
     CommandModeGetDefEmailClient,
     CommandModeSetDefEmailClient,
@@ -50,9 +52,9 @@ struct DefEmailClientData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEmailClientData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Get/Set the default email client"));
+    parser->setApplicationDescription("Get/Set the default email client"_L1);
 
-    parser->addPositionalArgument(QL1S("def-email-client"), QL1S());
+    parser->addPositionalArgument("def-email-client"_L1, ""_L1);
 
     const QCommandLineOption defEmailClientNameOption(QStringList() << QSL("s") << QSL("set"),
                 QSL("Email Client to be set as default"), QSL("email client"));
@@ -115,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
 }
 
 DefEmailClientMatCommand::DefEmailClientMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("def-email-client"),
+    : MatCommandInterface("def-email-client"_L1,
                           QSL("Get/Set the default email client"),
                           parser)
 {

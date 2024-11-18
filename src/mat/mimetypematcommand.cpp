@@ -37,9 +37,11 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 MimeTypeMatCommand::MimeTypeMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("mimetype"),
-                          QL1S("Determines a file (mime)type"),
+    : MatCommandInterface("mimetype"_L1,
+                          "Determines a file (mime)type"_L1,
                           parser)
 {
 }
@@ -49,9 +51,9 @@ MimeTypeMatCommand::~MimeTypeMatCommand() = default;
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QString *file, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Determines a file (mime)type"));
+    parser->setApplicationDescription("Determines a file (mime)type"_L1);
 
-    parser->addPositionalArgument(QL1S("mimetype"), QSL("file | URL"),
+    parser->addPositionalArgument("mimetype"_L1, QSL("file | URL"),
                                   QCoreApplication::tr("[file | URL]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -117,7 +119,7 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
     if (scheme.isEmpty()) {
         isLocalFile = true;
         localFilename = file;
-    } else if (scheme == QL1S("file")) {
+    } else if (scheme == "file"_L1) {
         isLocalFile = true;
         localFilename = QUrl(file).toLocalFile();
     }

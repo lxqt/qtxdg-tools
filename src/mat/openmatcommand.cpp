@@ -38,8 +38,10 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 OpenMatCommand::OpenMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("open"),
+    : MatCommandInterface("open"_L1,
                           QSL("Open files with the default application"),
                           parser)
 {
@@ -50,9 +52,9 @@ OpenMatCommand::~OpenMatCommand() = default;
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStringList *files, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Open files with the default application"));
+    parser->setApplicationDescription("Open files with the default application"_L1);
 
-    parser->addPositionalArgument(QL1S("open"), QSL("files | URLs"),
+    parser->addPositionalArgument("open"_L1, QSL("files | URLs"),
                                   QCoreApplication::tr("[files | URLs]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -119,7 +121,7 @@ int OpenMatCommand::run(const QStringList &arguments)
         if (scheme.isEmpty()) {
             isLocalFile = true;
             localFilename = urlString;
-        } else if (scheme == QL1S("file")) {
+        } else if (scheme == "file"_L1) {
             isLocalFile = true;
             localFilename = QUrl(urlString).toLocalFile();
         }

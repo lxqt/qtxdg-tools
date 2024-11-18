@@ -35,6 +35,8 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 enum DefTerminalCommandMode {
     CommandModeGetDefTerminal,
     CommandModeSetDefTerminal,
@@ -51,9 +53,9 @@ struct DefTerminalData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTerminalData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Get/Set the default terminal"));
+    parser->setApplicationDescription("Get/Set the default terminal"_L1);
 
-    parser->addPositionalArgument(QL1S("def-terminal"), QL1S());
+    parser->addPositionalArgument("def-terminal"_L1, ""_L1);
 
     const QCommandLineOption defTerminalNameOption(QStringList() << QSL("s") << QSL("set"),
                 QSL("Terminal to be set as default"), QSL("terminal"));
@@ -116,7 +118,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
 }
 
 DefTerminalMatCommand::DefTerminalMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("def-terminal"),
+    : MatCommandInterface("def-terminal"_L1,
                           QSL("Get/Set the default terminal"),
                           parser)
 {

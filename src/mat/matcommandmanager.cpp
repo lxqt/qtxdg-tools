@@ -26,6 +26,7 @@
 
 #include <QDebug>
 
+using namespace Qt::Literals::StringLiterals;
 
 MatCommandManager::MatCommandManager() = default;
 
@@ -49,7 +50,7 @@ QString MatCommandManager::descriptionsHelpText() const
 {
     QString text;
     int longestName = 0;
-    const QLatin1String doubleSpace("  ");
+    const auto doubleSpace = "  "_L1;
 
     for (const auto *cmd : std::as_const(mCommands)) {
         longestName = qMax(longestName, cmd->name().size());

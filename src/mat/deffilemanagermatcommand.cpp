@@ -34,6 +34,8 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 enum DefFileManagerCommandMode {
     CommandModeGetDefFileManager,
     CommandModeSetDefFileManager,
@@ -50,9 +52,9 @@ struct DefFileManagerData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFileManagerData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Get/Set the default file manager"));
+    parser->setApplicationDescription("Get/Set the default file manager"_L1);
 
-    parser->addPositionalArgument(QL1S("def-file-manager"), QL1S());
+    parser->addPositionalArgument("def-file-manager"_L1, ""_L1);
 
     const QCommandLineOption defFileManagerNameOption(QStringList() << QSL("s") << QSL("set"),
                 QSL("File Manager to be set as default"), QSL("file manager"));
@@ -115,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
 }
 
 DefFileManagerMatCommand::DefFileManagerMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("def-file-manager"),
+    : MatCommandInterface("def-file-manager"_L1,
                           QSL("Get/Set the default file manager"),
                           parser)
 {
