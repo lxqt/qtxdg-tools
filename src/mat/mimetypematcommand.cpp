@@ -20,7 +20,6 @@
 #include "mimetypematcommand.h"
 #include "matglobals.h"
 
-#include "xdgmacros.h"
 #include "xdgdesktopfile.h"
 #include "xdgmimeapps.h"
 

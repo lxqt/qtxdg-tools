@@ -20,8 +20,6 @@
 
 #include "matcommandmanager.h"
 
-#include "xdgmacros.h"
-
 #include "matcommandinterface.h"
 
 #include <QDebug>

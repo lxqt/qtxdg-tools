@@ -20,8 +20,6 @@
 
 #include "matcommandinterface.h"
 
-#include "xdgmacros.h"
-
 #include <QCommandLineParser>
 
 MatCommandInterface::MatCommandInterface(const QString &name, const QString &description, QCommandLineParser *parser)

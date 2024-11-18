@@ -22,7 +22,6 @@
 #include "matglobals.h"
 
 #include "xdgdesktopfile.h"
-#include "xdgmacros.h"
 #include "xdgmimeapps.h"
 
 #include <QCommandLineOption>

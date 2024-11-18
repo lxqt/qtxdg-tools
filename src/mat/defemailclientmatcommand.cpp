@@ -21,7 +21,6 @@
 #include "defemailclientmatcommand.h"
 
 #include "matglobals.h"
-#include "xdgmacros.h"
 #include "xdgdefaultapps.h"
 #include "xdgdesktopfile.h"
 

@@ -27,8 +27,6 @@
 #include "deffilemanagermatcommand.h"
 #include "defterminalmatcommand.h"
 
-#include "xdgmacros.h"
-
 #include <QCoreApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
