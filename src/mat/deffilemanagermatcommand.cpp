@@ -90,7 +90,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
 
     if (isDefFileManagerNameSet && !posArgs.empty()) {
         *errorMessage = QSL("Extra arguments given: ");
-        errorMessage->append(posArgs.join(QLatin1Char(',')));
+        errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 

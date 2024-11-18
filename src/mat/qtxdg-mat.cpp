@@ -41,7 +41,7 @@ extern void Q_CORE_EXPORT qt_call_post_routines();
 [[noreturn]] void showHelp(const QString &parserHelp, const QString &commandsDescription, int exitCode)
 {
     QString text;
-    const QLatin1Char nl('\n');
+    const auto nl(u'\n');
 
     text.append(parserHelp);
     text.append(nl);

@@ -90,7 +90,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
 
     if (isDefEmailClientNameSet && !posArgs.empty()) {
         *errorMessage = QSL("Extra arguments given: ");
-        errorMessage->append(posArgs.join(QLatin1Char(',')));
+        errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 

@@ -57,8 +57,8 @@ QString MatCommandManager::descriptionsHelpText() const
     longestName += 2; // account for the inital dobule space
     for (const auto *cmd : std::as_const(mCommands)) {
         QString ptext = doubleSpace + cmd->name();
-        ptext = ptext.leftJustified(longestName, QL1C(' '));
-        ptext += doubleSpace + cmd->description() + QL1C('\n');
+        ptext = ptext.leftJustified(longestName, u' ');
+        ptext += doubleSpace + cmd->description() + u'\n';
         text.append(ptext);
     }
     return text;
