@@ -52,9 +52,9 @@ struct DefWebBrowserData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWebBrowserData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Get/Set the default web browser"_L1);
+    parser->setApplicationDescription(u"Get/Set the default web browser"_s);
 
-    parser->addPositionalArgument("def-web-browser"_L1, ""_L1);
+    parser->addPositionalArgument(u"def-web-browser"_s, ""_L1);
 
     const QCommandLineOption defWebBrowserNameOption(QStringList() << u"s"_s << u"set"_s,
                 u"Web Browser to be set as default"_s, u"web bowser"_s);
@@ -117,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefWe
 }
 
 DefWebBrowserMatCommand::DefWebBrowserMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("def-web-browser"_L1,
+    : MatCommandInterface(u"def-web-browser"_s,
                           u"Get/Set the default web browser"_s,
                           parser)
 {

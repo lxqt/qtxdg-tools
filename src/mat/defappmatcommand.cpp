@@ -50,9 +50,9 @@ struct DefAppData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefAppData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Get/Set the default application for a mimetype"_L1);
+    parser->setApplicationDescription(u"Get/Set the default application for a mimetype"_s);
 
-    parser->addPositionalArgument("defapp"_L1, u"mimetype(s)"_s,
+    parser->addPositionalArgument(u"defapp"_s, u"mimetype(s)"_s,
                                   QCoreApplication::tr("[mimetype(s)...]"));
 
     const QCommandLineOption defAppNameOption(QStringList() << u"s"_s << u"set"_s,
@@ -108,8 +108,8 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefAp
 }
 
 DefAppMatCommand::DefAppMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("defapp"_L1,
-                          "Get/Set the default application for a mimetype"_L1,
+    : MatCommandInterface(u"defapp"_s,
+                          u"Get/Set the default application for a mimetype"_s,
                           parser)
 {
    Q_CHECK_PTR(parser);

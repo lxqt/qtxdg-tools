@@ -40,8 +40,8 @@
 using namespace Qt::Literals::StringLiterals;
 
 MimeTypeMatCommand::MimeTypeMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("mimetype"_L1,
-                          "Determines a file (mime)type"_L1,
+    : MatCommandInterface(u"mimetype"_s,
+                          u"Determines a file (mime)type"_s,
                           parser)
 {
 }
@@ -51,9 +51,9 @@ MimeTypeMatCommand::~MimeTypeMatCommand() = default;
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QString *file, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Determines a file (mime)type"_L1);
+    parser->setApplicationDescription(u"Determines a file (mime)type"_s);
 
-    parser->addPositionalArgument("mimetype"_L1, u"file | URL"_s,
+    parser->addPositionalArgument(u"mimetype"_s, u"file | URL"_s,
                                   QCoreApplication::tr("[file | URL]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();

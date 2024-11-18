@@ -52,9 +52,9 @@ struct DefEmailClientData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEmailClientData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Get/Set the default email client"_L1);
+    parser->setApplicationDescription(u"Get/Set the default email client"_s);
 
-    parser->addPositionalArgument("def-email-client"_L1, ""_L1);
+    parser->addPositionalArgument(u"def-email-client"_s, ""_L1);
 
     const QCommandLineOption defEmailClientNameOption(QStringList() << u"s"_s << u"set"_s,
                 u"Email Client to be set as default"_s, u"email client"_s);
@@ -117,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefEm
 }
 
 DefEmailClientMatCommand::DefEmailClientMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("def-email-client"_L1,
+    : MatCommandInterface(u"def-email-client"_s,
                           u"Get/Set the default email client"_s,
                           parser)
 {

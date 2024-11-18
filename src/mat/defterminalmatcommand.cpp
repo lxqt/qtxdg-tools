@@ -53,9 +53,9 @@ struct DefTerminalData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTerminalData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Get/Set the default terminal"_L1);
+    parser->setApplicationDescription(u"Get/Set the default terminal"_s);
 
-    parser->addPositionalArgument("def-terminal"_L1, ""_L1);
+    parser->addPositionalArgument(u"def-terminal"_s, ""_L1);
 
     const QCommandLineOption defTerminalNameOption(QStringList() << u"s"_s << u"set"_s,
                 u"Terminal to be set as default"_s, u"terminal"_s);
@@ -118,7 +118,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefTe
 }
 
 DefTerminalMatCommand::DefTerminalMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("def-terminal"_L1,
+    : MatCommandInterface(u"def-terminal"_s,
                           u"Get/Set the default terminal"_s,
                           parser)
 {

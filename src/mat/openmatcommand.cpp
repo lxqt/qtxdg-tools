@@ -41,7 +41,7 @@
 using namespace Qt::Literals::StringLiterals;
 
 OpenMatCommand::OpenMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("open"_L1,
+    : MatCommandInterface(u"open"_s,
                           u"Open files with the default application"_s,
                           parser)
 {
@@ -52,9 +52,9 @@ OpenMatCommand::~OpenMatCommand() = default;
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStringList *files, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Open files with the default application"_L1);
+    parser->setApplicationDescription(u"Open files with the default application"_s);
 
-    parser->addPositionalArgument("open"_L1, u"files | URLs"_s,
+    parser->addPositionalArgument(u"open"_s, u"files | URLs"_s,
                                   QCoreApplication::tr("[files | URLs]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();

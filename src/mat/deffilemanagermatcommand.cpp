@@ -52,9 +52,9 @@ struct DefFileManagerData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFileManagerData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription("Get/Set the default file manager"_L1);
+    parser->setApplicationDescription(u"Get/Set the default file manager"_s);
 
-    parser->addPositionalArgument("def-file-manager"_L1, ""_L1);
+    parser->addPositionalArgument(u"def-file-manager"_s, ""_L1);
 
     const QCommandLineOption defFileManagerNameOption(QStringList() << u"s"_s << u"set"_s,
                 u"File Manager to be set as default"_s, u"file manager"_s);
@@ -117,7 +117,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
 }
 
 DefFileManagerMatCommand::DefFileManagerMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface("def-file-manager"_L1,
+    : MatCommandInterface(u"def-file-manager"_s,
                           u"Get/Set the default file manager"_s,
                           parser)
 {
