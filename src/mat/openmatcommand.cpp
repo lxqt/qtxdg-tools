@@ -135,7 +135,7 @@ int OpenMatCommand::run(const QStringList &arguments)
                 df = appsDb.defaultApp(mimeType.name());
             }
         } else { // not a local file
-			const QString contentType = QString::fromLatin1("x-scheme-handler/%1").arg(scheme);
+			const QString contentType = u"x-scheme-handler/%1"_s.arg(scheme);
 			df = appsDb.defaultApp(contentType);
         }
 
