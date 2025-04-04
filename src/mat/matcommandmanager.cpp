@@ -20,12 +20,11 @@
 
 #include "matcommandmanager.h"
 
-#include "xdgmacros.h"
-
 #include "matcommandinterface.h"
 
 #include <QDebug>
 
+using namespace Qt::Literals::StringLiterals;
 
 MatCommandManager::MatCommandManager() = default;
 
@@ -49,7 +48,7 @@ QString MatCommandManager::descriptionsHelpText() const
 {
     QString text;
     int longestName = 0;
-    const QLatin1String doubleSpace("  ");
+    const auto doubleSpace = "  "_L1;
 
     for (const auto *cmd : std::as_const(mCommands)) {
         longestName = qMax(longestName, cmd->name().size());
@@ -57,8 +56,8 @@ QString MatCommandManager::descriptionsHelpText() const
     longestName += 2; // account for the inital dobule space
     for (const auto *cmd : std::as_const(mCommands)) {
         QString ptext = doubleSpace + cmd->name();
-        ptext = ptext.leftJustified(longestName, QL1C(' '));
-        ptext += doubleSpace + cmd->description() + QL1C('\n');
+        ptext = ptext.leftJustified(longestName, u' ');
+        ptext += doubleSpace + cmd->description() + u'\n';
         text.append(ptext);
     }
     return text;

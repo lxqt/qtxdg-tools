@@ -21,7 +21,6 @@
 #include "deffilemanagermatcommand.h"
 
 #include "matglobals.h"
-#include "xdgmacros.h"
 #include "xdgdefaultapps.h"
 #include "xdgdesktopfile.h"
 
@@ -33,6 +32,8 @@
 #include <QStringList>
 
 #include <iostream>
+
+using namespace Qt::Literals::StringLiterals;
 
 enum DefFileManagerCommandMode {
     CommandModeGetDefFileManager,
@@ -50,15 +51,15 @@ struct DefFileManagerData {
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFileManagerData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Get/Set the default file manager"));
+    parser->setApplicationDescription(u"Get/Set the default file manager"_s);
 
-    parser->addPositionalArgument(QL1S("def-file-manager"), QL1S());
+    parser->addPositionalArgument(u"def-file-manager"_s, ""_L1);
 
-    const QCommandLineOption defFileManagerNameOption(QStringList() << QSL("s") << QSL("set"),
-                QSL("File Manager to be set as default"), QSL("file manager"));
+    const QCommandLineOption defFileManagerNameOption(QStringList() << u"s"_s << u"set"_s,
+                u"File Manager to be set as default"_s, u"file manager"_s);
 
-    const QCommandLineOption listAvailableOption(QStringList() << QSL("l") << QSL("list-available"),
-                QSL("List available file managers"));
+    const QCommandLineOption listAvailableOption(QStringList() << u"l"_s << u"list-available"_s,
+                u"List available file managers"_s);
 
     parser->addOption(defFileManagerNameOption);
     parser->addOption(listAvailableOption);
@@ -74,7 +75,7 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
@@ -89,18 +90,18 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
     posArgs.removeAt(0);
 
     if (isDefFileManagerNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("Extra arguments given: ");
-        errorMessage->append(posArgs.join(QLatin1Char(',')));
+        *errorMessage = u"Extra arguments given: "_s;
+        errorMessage->append(posArgs.join(u','));
         return CommandLineError;
     }
 
     if (!isDefFileManagerNameSet && !posArgs.empty()) {
-        *errorMessage = QSL("To set the default file manager use the -s/--set option");
+        *errorMessage = u"To set the default file manager use the -s/--set option"_s;
         return CommandLineError;
     }
 
     if (isListAvailableSet && (isDefFileManagerNameSet || !posArgs.empty())) {
-        *errorMessage = QSL("list-available can't be used with other options and doesn't take arguments");
+        *errorMessage = u"list-available can't be used with other options and doesn't take arguments"_s;
         return CommandLineError;
     }
 
@@ -115,8 +116,8 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, DefFi
 }
 
 DefFileManagerMatCommand::DefFileManagerMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("def-file-manager"),
-                          QSL("Get/Set the default file manager"),
+    : MatCommandInterface(u"def-file-manager"_s,
+                          u"Get/Set the default file manager"_s,
                           parser)
 {
    Q_CHECK_PTR(parser);
@@ -167,13 +168,13 @@ int DefFileManagerMatCommand::run(const QStringList & /*arguments*/)
         XdgDesktopFile toSetDefFileManager;
         if (toSetDefFileManager.load(data.defFileManagerName)) {
             if (XdgDefaultApps::setFileManager(toSetDefFileManager)) {
-                std::cout << qPrintable(QSL("Set '%1' as the default file manager\n").arg(toSetDefFileManager.fileName()));
+                std::cout << qPrintable(u"Set '%1' as the default file manager\n"_s.arg(toSetDefFileManager.fileName()));
             } else {
-                std::cerr << qPrintable(QSL("Could not set '%1' as the default file manager\n").arg(toSetDefFileManager.fileName()));
+                std::cerr << qPrintable(u"Could not set '%1' as the default file manager\n"_s.arg(toSetDefFileManager.fileName()));
                 success = false;
             }
         } else { // could not load application file
-            std::cerr << qPrintable(QSL("Could not find find '%1'\n").arg(data.defFileManagerName));
+            std::cerr << qPrintable(u"Could not find find '%1'\n"_s.arg(data.defFileManagerName));
             success = false;
         }
     }

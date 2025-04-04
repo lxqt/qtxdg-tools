@@ -21,7 +21,6 @@
 #include "openmatcommand.h"
 #include "matglobals.h"
 
-#include "xdgmacros.h"
 #include "xdgdesktopfile.h"
 #include "xdgmimeapps.h"
 
@@ -38,9 +37,11 @@
 
 #include <iostream>
 
+using namespace Qt::Literals::StringLiterals;
+
 OpenMatCommand::OpenMatCommand(QCommandLineParser *parser)
-    : MatCommandInterface(QL1S("open"),
-                          QSL("Open files with the default application"),
+    : MatCommandInterface(u"open"_s,
+                          u"Open files with the default application"_s,
                           parser)
 {
 }
@@ -50,9 +51,9 @@ OpenMatCommand::~OpenMatCommand() = default;
 static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStringList *files, QString *errorMessage)
 {
     parser->clearPositionalArguments();
-    parser->setApplicationDescription(QL1S("Open files with the default application"));
+    parser->setApplicationDescription(u"Open files with the default application"_s);
 
-    parser->addPositionalArgument(QL1S("open"), QSL("files | URLs"),
+    parser->addPositionalArgument(u"open"_s, u"files | URLs"_s,
                                   QCoreApplication::tr("[files | URLs]"));
 
     const QCommandLineOption helpOption = parser->addHelpOption();
@@ -67,13 +68,13 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
         return CommandLineVersionRequested;
     }
 
-    if (parser->isSet(helpOption) || parser->isSet(QSL("help-all"))) {
+    if (parser->isSet(helpOption) || parser->isSet(u"help-all"_s)) {
         return CommandLineHelpRequested;
     }
 
     QStringList fs = parser->positionalArguments();
     if (fs.size() < 2) {
-        *errorMessage = QSL("No file or URL given");
+        *errorMessage = u"No file or URL given"_s;
         return CommandLineError;
     }
 
@@ -119,7 +120,7 @@ int OpenMatCommand::run(const QStringList &arguments)
         if (scheme.isEmpty()) {
             isLocalFile = true;
             localFilename = urlString;
-        } else if (scheme == QL1S("file")) {
+        } else if (scheme == "file"_L1) {
             isLocalFile = true;
             localFilename = QUrl(urlString).toLocalFile();
         }
@@ -127,27 +128,27 @@ int OpenMatCommand::run(const QStringList &arguments)
         if (isLocalFile) {
             const QFileInfo f (localFilename);
             if (!f.exists()) {
-                std::cerr << qPrintable(QSL("Cannot access %1: No such file or directory\n").arg(urlString));
+                std::cerr << qPrintable(u"Cannot access %1: No such file or directory\n"_s.arg(urlString));
                 break;
             } else {
                 const QMimeType mimeType = mimeDb.mimeTypeForFile(f);
                 df = appsDb.defaultApp(mimeType.name());
             }
         } else { // not a local file
-			const QString contentType = QString::fromLatin1("x-scheme-handler/%1").arg(scheme);
+			const QString contentType = u"x-scheme-handler/%1"_s.arg(scheme);
 			df = appsDb.defaultApp(contentType);
         }
 
         if (df) { // default app found
             if (!df->startDetached(isLocalFile ? localFilename : urlString)) {
                 std::cerr << qPrintable(
-                        QSL("Error while running the default application (%1) for %2\n").arg(df->name(), urlString));
+                        u"Error while running the default application (%1) for %2\n"_s.arg(df->name(), urlString));
                 success = false;
             }
             delete df;
             df = nullptr;
         } else { // no default app found
-            std::cout << qPrintable(QSL("No default application for '%1'\n").arg(urlString));
+            std::cout << qPrintable(u"No default application for '%1'\n"_s.arg(urlString));
         }
     }
     return success ? EXIT_SUCCESS : EXIT_FAILURE;

@@ -27,12 +27,12 @@
 #include "deffilemanagermatcommand.h"
 #include "defterminalmatcommand.h"
 
-#include "xdgmacros.h"
-
 #include <QCoreApplication>
 #include <QCommandLineOption>
 #include <QCommandLineParser>
 #include <QDebug>
+
+using namespace Qt::Literals::StringLiterals;
 
 extern void Q_CORE_EXPORT qt_call_post_routines();
 
@@ -41,7 +41,7 @@ extern void Q_CORE_EXPORT qt_call_post_routines();
 [[noreturn]] void showHelp(const QString &parserHelp, const QString &commandsDescription, int exitCode)
 {
     QString text;
-    const QLatin1Char nl('\n');
+    const auto nl(u'\n');
 
     text.append(parserHelp);
     text.append(nl);
@@ -58,16 +58,16 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     int runResult = 0;
-    app.setApplicationName(QSL("qtxdg-mat"));
-    app.setApplicationVersion(QSL(QTXDG_TOOLS_VERSION));
-    app.setOrganizationName(QSL("LXQt"));
-    app.setOrganizationDomain(QSL("lxqt.org"));
+    app.setApplicationName(u"qtxdg-mat"_s);
+    app.setApplicationVersion(QStringLiteral(QTXDG_TOOLS_VERSION));
+    app.setOrganizationName(u"LXQt"_s);
+    app.setOrganizationDomain(u"lxqt.org"_s);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QSL("QtXdg MimeApps Tool"));
+    parser.setApplicationDescription(u"QtXdg MimeApps Tool"_s);
 
-    parser.addPositionalArgument(QSL("command"),
-                                 QSL("Command to execute."));
+    parser.addPositionalArgument(u"command"_s,
+                                 u"Command to execute."_s);
 
     QScopedPointer<MatCommandManager> manager(new MatCommandManager());
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
         const QCommandLineOption helpOption = parser.addHelpOption();
         const QCommandLineOption versionOption = parser.addVersionOption();
         parser.parse(QCoreApplication::arguments());
-        if (parser.isSet(helpOption) || parser.isSet(QSL("help-all"))) {
+        if (parser.isSet(helpOption) || parser.isSet(u"help-all"_s)) {
             showHelp(parser.helpText(), manager->descriptionsHelpText(), EXIT_SUCCESS);
             Q_UNREACHABLE();
         }
