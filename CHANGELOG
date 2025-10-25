@@ -1,3 +1,7 @@
+qtxdg-tools-4.3.0 / 2025-11-05
+===============================
+ * Bumped the version and dependencies.
+
 qtxdg-tools-4.2.0 / 2025-04-17
 ===============================
  * Modernized the strings by using `QLatin1StringView` and string operators. Also, removed the `xdgmacros` header.
