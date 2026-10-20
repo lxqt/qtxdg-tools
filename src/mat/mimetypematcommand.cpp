@@ -124,13 +124,13 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
     }
 
     if (isLocalFile) {
-        const QFileInfo info(file);
-        if (!info.exists(localFilename)) {
+        const QFileInfo info(localFilename);
+        if (!info.exists()) {
             std::cerr << qPrintable(u"Cannot access '%1': No such file or directory\n"_s.arg(file));
             return EXIT_FAILURE;
         } else {
             QMimeDatabase mimeDb;
-            const QMimeType mimeType = mimeDb.mimeTypeForFile(info, QMimeDatabase::MatchExtension);
+            const QMimeType mimeType = mimeDb.mimeTypeForFile(info);
             std::cout << qPrintable(mimeType.name()) << "\n";
             return EXIT_SUCCESS;
         }
