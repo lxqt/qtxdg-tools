@@ -1,3 +1,8 @@
+qtxdg-tools-4.5.0 / 2026-11-05
+===============================
+ * Fixed minor indentation issue.
+ * Don't choose the format of URLS sent to `XdgDesktop::startDetached()`.
+
 qtxdg-tools-4.4.0 / 2026-04-20
 ===============================
  * Bumped the version and dependencies.
