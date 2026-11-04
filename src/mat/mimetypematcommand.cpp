@@ -35,8 +35,22 @@
 #include <QUrl>
 
 #include <iostream>
+#include <qmimedatabase.h>
 
 using namespace Qt::Literals::StringLiterals;
+
+enum MimetypeCommandMode {
+    CommandModeUseContentOnly,
+    CommandModeUseFilenameOnly,
+    CommandModeUseDefault
+};
+
+struct MimetypeData {
+    MimetypeData() : mode(CommandModeUseDefault) {}
+
+    MimetypeCommandMode mode;
+    QString file;
+};
 
 MimeTypeMatCommand::MimeTypeMatCommand(QCommandLineParser *parser)
     : MatCommandInterface(u"mimetype"_s,
@@ -45,9 +59,10 @@ MimeTypeMatCommand::MimeTypeMatCommand(QCommandLineParser *parser)
 {
 }
 
+
 MimeTypeMatCommand::~MimeTypeMatCommand() = default;
 
-static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QString *file, QString *errorMessage)
+static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, MimetypeData *data, QString *errorMessage)
 {
     parser->clearPositionalArguments();
     parser->setApplicationDescription(u"Determines a file (mime)type"_s);
@@ -55,8 +70,17 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
     parser->addPositionalArgument(u"mimetype"_s, u"file | URL"_s,
                                   QCoreApplication::tr("[file | URL]"));
 
+    const QCommandLineOption useContentOnlyOption(QStringList() << u"c"_s << u"content-only"_s,
+                u"Use only content to determine the mimetype"_s);
+
+    const QCommandLineOption useFilenameOnlyOption(QStringList() << u"f"_s << u"filename-only"_s,
+                u"Use only filename extension to determine the mimetype"_s);
+
     const QCommandLineOption helpOption = parser->addHelpOption();
     const QCommandLineOption versionOption = parser->addVersionOption();
+
+    parser->addOption(useContentOnlyOption);
+    parser->addOption(useFilenameOnlyOption);
 
     if (!parser->parse(QCoreApplication::arguments())) {
         *errorMessage = parser->errorText();
@@ -71,6 +95,15 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
         return CommandLineHelpRequested;
     }
 
+    const bool isContentOnlySet = parser->isSet(useContentOnlyOption);
+    const bool isFilenameOnlySet = parser->isSet(useFilenameOnlyOption);
+
+    if (isContentOnlySet && isFilenameOnlySet) {
+        *errorMessage = u"Content only and filename only are set."_s;
+        return CommandLineError;
+
+    }
+
     QStringList fs = parser->positionalArguments();
     if (fs.size() < 2) {
         *errorMessage = u"No file given"_s;
@@ -83,7 +116,13 @@ static CommandLineParseResult parseCommandLine(QCommandLineParser *parser, QStri
         *errorMessage = u"Only one file, please"_s;
         return CommandLineError;
     }
-    *file = fs.at(0);
+    data->file = fs.at(0);
+    if (isContentOnlySet)
+        data->mode = CommandModeUseContentOnly;
+    else if (isFilenameOnlySet)
+        data->mode = CommandModeUseFilenameOnly;
+    else
+        data->mode = CommandModeUseDefault;
 
     return CommandLineOk;
 }
@@ -93,9 +132,9 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
     Q_UNUSED(arguments);
 
     QString errorMessage;
-    QString file;
+    MimetypeData data;
 
-    switch(parseCommandLine(parser(), &file, &errorMessage)) {
+    switch(parseCommandLine(parser(), &data, &errorMessage)) {
     case CommandLineOk:
         break;
     case CommandLineError:
@@ -113,29 +152,41 @@ int MimeTypeMatCommand::run(const QStringList &arguments)
 
     bool isLocalFile = false;
     QString localFilename;
-    const QUrl url(file);
+    const QUrl url(data.file);
     const QString scheme = url.scheme();
     if (scheme.isEmpty()) {
         isLocalFile = true;
-        localFilename = file;
+        localFilename = data.file;
     } else if (scheme == "file"_L1) {
         isLocalFile = true;
-        localFilename = QUrl(file).toLocalFile();
+        localFilename = QUrl(data.file).toLocalFile();
     }
 
     if (isLocalFile) {
-        const QFileInfo info(file);
-        if (!info.exists(localFilename)) {
-            std::cerr << qPrintable(u"Cannot access '%1': No such file or directory\n"_s.arg(file));
+        const QFileInfo info(localFilename);
+        if (!info.exists()) {
+            std::cerr << qPrintable(u"Cannot access '%1': No such file or directory\n"_s.arg(data.file));
             return EXIT_FAILURE;
         } else {
             QMimeDatabase mimeDb;
-            const QMimeType mimeType = mimeDb.mimeTypeForFile(info, QMimeDatabase::MatchExtension);
+            QMimeType mimeType;
+            switch(data.mode) {
+            case CommandModeUseDefault:
+                mimeType = mimeDb.mimeTypeForFile(info);
+                break;
+            case CommandModeUseFilenameOnly:
+                mimeType = mimeDb.mimeTypeForFile(info, QMimeDatabase::MatchExtension);
+                break;
+            case CommandModeUseContentOnly:
+                mimeType = mimeDb.mimeTypeForFile(info, QMimeDatabase::MatchContent);
+                break;
+            }
+
             std::cout << qPrintable(mimeType.name()) << "\n";
             return EXIT_SUCCESS;
         }
     } else { // not a local file
-        std::cerr << qPrintable(u"Can't handle '%1': '%2' scheme not supported\n"_s.arg(file, scheme));
+        std::cerr << qPrintable(u"Can't handle '%1': '%2' scheme not supported\n"_s.arg(data.file, scheme));
         return EXIT_FAILURE;
     }
 }
